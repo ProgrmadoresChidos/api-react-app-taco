@@ -1,7 +1,3 @@
-// var user = require('../../services/users/userServices');
-
-// router.route("/guardar", user.saveUser );
-
 var router = require('express').Router();
 const userController = require('../../api/users/userController');
 
