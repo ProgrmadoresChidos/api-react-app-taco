@@ -1,14 +1,17 @@
-const express =  require('express');
+const express = require('express');
 const http = require('http');
+const cors = require('cors');
+
+// require controllers 
+const userControllers = require('./api/users/userController');
+
 const app = express();
 const server = http.createServer(app);
-const PORT = 8080;
-
-app.get("/",(req, res)=>{
-    res.send('hola mundo');
-})
+const PORT = process.env.PORT || 8080;
 
 
-server.listen( PORT, () =>{
-    console.info("Aplicación corriendo en el puerto " + PORT);
-})
+app.use(userControllers);
+
+app.use(cors);
+
+server.listen(PORT, () => console.log('Server has started on port: ', PORT));
