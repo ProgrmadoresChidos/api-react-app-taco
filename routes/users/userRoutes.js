@@ -1,7 +1,11 @@
+// var user = require('../../services/users/userServices');
+
+// router.route("/guardar", user.saveUser );
+
 var router = require('express').Router();
-var user = require('../../services/users/userServices');
+const userController = require('../../api/users/userController');
 
-router.route("/guardar", user.saveUser );
+router.route("/usuario").get(userController.saveUser);
+router.route("/buscar").get(userController.buscarUser);
 
-
-exports.module = router;
+module.exports = router;
