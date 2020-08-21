@@ -1,6 +1,9 @@
-exports.saveUser = () => {
-    return 'guardar usuario';
-}
-exports.buscarUser = () => {
-    return 'buscar usuario';
+const userRepository = require('../../repository/users/userRepository')
+
+//logica de negocio
+
+
+module.exports = {
+    saveUser: ()=> userRepository.saveUser(),
+    buscarUser: () => "jorjais"
 }
