@@ -1,17 +1,28 @@
+require('./config/config');
 const express = require('express');
-const http = require('http');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const http = require('http');
 
-// require controllers 
 const routes = require('./routes');
 
 const app = express();
-// const server = http.createServer(app);
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
-app.use(routes);
-
+// cors
 app.use(cors);
 
-// server.listen(PORT, () => console.log('Server has started on port: ', PORT));
+// Require routes
+app.use(routes);
+
+// Conexion con Mongo DB
+mongoose.connect('mongodb://localhost:27017/app-del-taco', {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+}, (err, res) => {
+    if (err) throw err;
+    console.log('ONLINE database!');
+});
+
 app.listen(PORT, () => console.log('Server has started on port: ', PORT));
