@@ -1,14 +1,30 @@
-const express =  require('express');
-const http = require('http');
+require('./config/config');
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+// routes
+const routes = require('./routes');
+
+// 
 const app = express();
-const server = http.createServer(app);
-const PORT = 8080;
+app.use(express.json());
+const PORT = process.env.PORT;
 
-app.get("/",(req, res)=>{
-    res.send('hola mundo');
-})
+// Require routes
+app.use(routes);
 
+// cors
+app.use(cors);
 
-server.listen( PORT, () =>{
-    console.info("Aplicación corriendo en el puerto " + PORT);
-})
+// Conexion con Mongo DB
+mongoose.connect(process.env.MONGO_CONNEC_TO, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+}, (err, res) => {
+    if (err) throw err;
+    console.log('ONLINE database!');
+});
+
+app.listen(PORT, () => console.log('Server has started on port: ', PORT));
