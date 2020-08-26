@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'Minimum password length is 8 characters'],
         validate:
         {
-            validator: (v) =>  passRegex.test(v),
+            validator: (v) => passRegex.test(v),
             message:'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
         }
     }
