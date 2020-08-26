@@ -32,15 +32,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter a password'],
         minlength: [8, 'Minimum password length is 8 characters'],
-        // validate:
-        // [
-        //     (v) => {
-        //         // console.log(v, passRegex.exec(v) === null)
-        //         const res = (passRegex.exec(v) === null);
-        //         return !res;
-        //     },
-        //     'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
-        // ]
+        validate:
+        [
+            (v) => {
+                // console.log(v, passRegex.exec(v) === null)
+                const res = (passRegex.exec(v) === null);
+                return !res;
+            },
+            'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
+        ]
     }
 })
 
