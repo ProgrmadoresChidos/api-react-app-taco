@@ -38,8 +38,8 @@ module.exports = {
             }
         }catch(err){
             return {
-                ...err,
-                // ...handleError(err),
+                // ...err,
+                ...handleError(err),
                 status: 400
             }
         }
