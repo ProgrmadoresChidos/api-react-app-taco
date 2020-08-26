@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 
-const passRegex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/;
+
 const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/
 
 const userSchema = new mongoose.Schema({
@@ -24,12 +24,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Please enter a password'],
-        minlength: [8, 'Minimum password length is 8 characters'],
-        validate:
-        {
-            validator: (v) => passRegex.test(v),
-            message:'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
-        }
+        minlength: [8, 'Minimum password length is 8 characters']
     }
 })
 
