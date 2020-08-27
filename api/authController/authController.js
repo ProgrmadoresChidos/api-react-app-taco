@@ -8,14 +8,11 @@ const validateResult = (result, res) => {
         res.status(status).send(data);
     } else {
         const { status, ...data } = result;
-        const expTime = process.env.CADUCIDAD_TOKEN;
-        // console.log(expTime)
-        var token = jwt.sign(data, process.env.SEED, { expiresIn: 60 * 60 });
-        res.cookie('jwt', token, { httpOnly: true, maxAge: expTime * 1000 });
+        var token = jwt.sign(data, process.env.SEED, { expiresIn: Number(process.env.CADUCIDAD_TOKEN) });
+        res.cookie('jwt', token, { httpOnly: true, maxAge: Number(process.env.CADUCIDAD_TOKEN) * 1000 });
         res.status(status).send(data);
     }
 }
-
 
 module.exports = {
     signup_post: async (req, res) => {

@@ -24,11 +24,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter a password'],
         minlength: [8, 'Minimum password length is 8 characters']
+    },
+    joinedAt: {
+        type: Date,
+        default: Date.now
+    },
+    lastUpdatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    availableAccount: {
+        type: Boolean,
+        default: true
     }
-    // joinedAt: {
-    //     type: Date,
-    //     default: Date.now
-    // }
 })
 
 const user = mongoose.model('user', userSchema);
