@@ -1,61 +1,63 @@
+const AuthError = require('../../errors/authErrors/authError');
 const authRepository = require('../../repository/autRepository/authRepository');
 
-const handleError = ( error ) => {
+const handleError = (error) => {
 
     let errors = {}
-
-    Object.keys(error).forEach( value => {
-        if( value === "name"){
+    
+    Object.keys(error).forEach(value => {
+        if (value === "name") {
             errors = {
                 "mongoDB": error.name,
                 "code": error.code
             }
-        }else if(value === "errors"){
-            errors = Object.keys(error.errors).reduce( (acc, key) =>
-            ({
-                ...acc,
-                [key]: error.errors[key].message
-            })
-            , {})
+        } else if (value === "errors") {
+            errors = Object.keys(error.errors).reduce((acc, key) =>
+                ({
+                    ...acc,
+                    [key]: error.errors[key].message
+                }), {})
         }
     })
-
-    return {
-        errors: {
-            ...errors
-        }
-    }
+    return errors;
 }
 
 module.exports = {
-    signup_post: async (usuario) =>{
+    signup_post: async (usuario) => {
         const passRegex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/;
-        try{
-            let errors = null
+        try {
+            let errors = null;
             const { password } = usuario;
-            if(!passRegex.test(password)){
-                errors  = {
+            if(!password){
+                errors = {
                     ...errors,
-                    'password' : 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
+                    'password': {
+                        message: 'Please enter a password'
+                    }
+                }
+            }else if (!passRegex.test(password)) {
+                errors = {
+                    ...errors,
+                    'password': {
+                        message: 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
+                    }
                 }
             }
-            if(errors === null){
-                const {_doc} = await authRepository.signup_post(usuario);   
-                return { 
-                    ..._doc,
+            if (errors === null) {
+                const { _doc } = await authRepository.signup_post(usuario);
+                const { password, _id, __v, ...data } = _doc
+                return {
+                    ...data,
                     status: 201
                 }
-            }else{
-                return {
-                    errors : errors,
-                    status: 400
-                }
+            } else {
+                throw { errors };
             }
-        }catch(err){
-            return {
-                ...handleError(err),
-                status: 400
-            }
+        } catch (err) {
+            return new AuthError(
+                handleError(err),
+                400
+            )
         }
     }
 }

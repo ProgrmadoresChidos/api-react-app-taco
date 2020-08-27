@@ -16,3 +16,17 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 // MongoDB
 // **************************
 process.env.MONGO_CONNEC_TO = process.env.MONGO_CONNEC_TO || 'mongodb://localhost:27017/app-del-taco'
+
+// **************************
+// Seed
+// **************************
+process.env.SEED = process.env.SEED || 'test-token'
+
+// **************************
+// Vencimiento del token
+// **************************
+// 60 segundos
+// 60 minutos
+// 24 horas
+// 30 dias
+process.env.CADUCIDAD_TOKEN = 60 * 60;

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 
-
 const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/
 
 const userSchema = new mongoose.Schema({
@@ -26,6 +25,10 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please enter a password'],
         minlength: [8, 'Minimum password length is 8 characters']
     }
+    // joinedAt: {
+    //     type: Date,
+    //     default: Date.now
+    // }
 })
 
 const user = mongoose.model('user', userSchema);
