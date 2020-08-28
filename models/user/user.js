@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
     availableAccount: {
         type: Boolean,
         default: true
+    },
+    profileImg: {
+        type: String,
+        default: ""
     }
 })
 

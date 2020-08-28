@@ -1,10 +1,9 @@
-const userServices = require('../../services/users/userServices');
+const userServices = require('../../services/usersService/userServices');
 
 // controllers
 
 module.exports = {
     saveUser: (req, res) => {
-        // console.log(req);
         const response = userServices.saveUser();// capa de negocios
         res.send(response);
     },

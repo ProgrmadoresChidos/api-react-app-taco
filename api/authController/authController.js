@@ -18,8 +18,5 @@ module.exports = {
     signup_post: async (req, res) => {
         const result = await authService.signup_post(req.body);
         validateResult(result, res);
-    },
-    signup_get: (req, res) => {
-        res.send('signup get');
     }
 }

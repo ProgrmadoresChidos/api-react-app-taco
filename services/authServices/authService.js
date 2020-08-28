@@ -4,7 +4,7 @@ const authRepository = require('../../repository/autRepository/authRepository');
 const handleError = (error) => {
 
     let errors = {}
-    
+
     Object.keys(error).forEach(value => {
         if (value === "name") {
             errors = {
@@ -28,14 +28,14 @@ module.exports = {
         try {
             let errors = null;
             const { password } = usuario;
-            if(!password){
+            if (!password) {
                 errors = {
                     ...errors,
                     'password': {
                         message: 'Please enter a password'
                     }
                 }
-            }else if (!passRegex.test(password)) {
+            } else if (!passRegex.test(password)) {
                 errors = {
                     ...errors,
                     'password': {
