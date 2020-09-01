@@ -13,5 +13,33 @@ module.exports = {
         })
 
         return await user.save();
-    }
+    },
+    login_post: async (email, password) => {
+        const user = await userModel.findOne({ email }).catch(error => {
+            throw {
+                error: {
+                    mongoError: error,
+                }
+            }
+        });
+        if (!user) {
+            return {
+                error: {
+                    message: 'Wrong (user) or password'
+                }
+            }
+        }
+
+        if (!bcrypt.compare(password, user.password)) {
+            return {
+                error: {
+                    message: 'Wrong user or password'
+                }
+            }
+        }
+
+        return {
+            user
+        }
+    },
 }

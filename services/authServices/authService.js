@@ -59,5 +59,20 @@ module.exports = {
                 400
             )
         }
-    }
+    },
+    login_post: async (email, password) => {
+        try {
+            const { error = null, user } = await authRepository.login_post(email, password);
+            if (error) {
+                throw error;
+            }
+            return {
+                status: 200,
+                user,
+            }
+        } catch (error) {
+            const err = error.mongoError ? handleError(error.mongoError) : error.message;
+            return new AuthError(err, 400);
+        }
+    },
 }

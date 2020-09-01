@@ -18,5 +18,9 @@ module.exports = {
     signup_post: async (req, res) => {
         const result = await authService.signup_post(req.body);
         validateResult(result, res);
-    }
+    },
+    login_post: async (req, res) => {
+        const result = await authService.login_post(req.body.email, req.body.password);
+        validateResult(result, res);
+    },
 }

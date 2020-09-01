@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authController = require('../../api/authController/authController');
 
 router.route('/signup').post(authController.signup_post);
+router.post('/login', authController.login_post);
 
 // login un post                     ** nestor
 // agregar rol al modelo             ** Roberto  
