@@ -35,6 +35,15 @@ const handleError = (error) => {
     return errors;
 }
 
+/**
+ * 
+ * @param {Field name} fieldName 
+ * @param {value to validate} value 
+ * @param {Regular expression} regex 
+ * @param {If the value has a minimun length} minlength 
+ * @param {Message when is require the field} messageRequire 
+ * @param {Message when is not matching the regex} messageAlt 
+ */
 const isValid = (fieldName, value, regex, minlength = 0, messageRequire = 'This field is required', messageAlt = 'regext patter doesn´t match') => {
     let error = null;
     if(minlength > 0){
