@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/
 
@@ -43,5 +44,5 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-const user = mongoose.model('user', userSchema);
-module.exports = user;
+userSchema.plugin(uniqueValidator, { message: 'Email already exists' })
+module.exports = mongoose.model('user', userSchema);

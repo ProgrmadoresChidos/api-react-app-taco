@@ -35,8 +35,18 @@ const handleError = (error) => {
     return errors;
 }
 
-const isValid = (fieldName, value, regex, messageRequire = 'This field is required', messageAlt = 'regext patter doesn´t match') => {
+const isValid = (fieldName, value, regex, minlength = 0, messageRequire = 'This field is required', messageAlt = 'regext patter doesn´t match') => {
     let error = null;
+    if(minlength > 0){
+        value.length < minlength? 
+        error = {
+            ...error,
+            [fieldName]: {
+                message: `Minimum length is ${ minlength } characters.`
+            }
+        }
+        : null
+    }
     if (!value) {
         error = {
             ...error,
@@ -76,14 +86,16 @@ module.exports = {
             error.push(isValid('name', name, nameRegex, 'Please enter a name', 'Please just enter letters'));
             error.push(isValid('lastName', lastName, nameRegex, 'Please enter your last name', 'Please just enter letters'));
             error.push(isValid('email', email, isEmail, 'Please enter an email', 'Please enter a valid email'))
-            error.push(isValid('password', password, passRegex, 'Please enter a password', 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'));
+            error.push(isValid('password', password, passRegex, 8, 'Please enter a password', 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'));
 
-            errors = error
-                .filter(err => err)         // remove all the null objects
-                .reduce((obj, key) => ({    // concat the errors in one object
-                    ...obj,
-                    ...key
-                }), {})
+            const errorFiltered = error.filter(err => err); // remove all the null objects
+            errors = errorFiltered.length > 0 ?
+                errorFiltered
+                    .reduce((obj, key) => ({    // concat the errors in one object
+                        ...obj,
+                        ...key
+                    }), {})
+                : null;
 
             if (errors === null) {
                 const { _doc } = await authRepository.signup_post(usuario);
