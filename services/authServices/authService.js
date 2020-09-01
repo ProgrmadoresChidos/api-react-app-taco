@@ -1,10 +1,23 @@
+const { isEmail } = require('validator');
+
 const AuthError = require('../../errors/authErrors/authError');
 const authRepository = require('../../repository/autRepository/authRepository');
+/*
+    model requested from validation schema.
+    {
+        errors: {
+            password: {
+                message: 'This is a message'
+            },
+            email: {
+                message: 'This is a message'
+            }
+        }
+    }
+*/
 
 const handleError = (error) => {
-
     let errors = {}
-
     Object.keys(error).forEach(value => {
         if (value === "name") {
             errors = {
@@ -22,27 +35,56 @@ const handleError = (error) => {
     return errors;
 }
 
+const isValid = (fieldName, value, regex, messageRequire = 'This field is required', messageAlt = 'regext patter doesn´t match') => {
+    let error = null;
+    if (!value) {
+        error = {
+            ...error,
+            [fieldName]: {
+                message: messageRequire
+            }
+        }
+    } else if (typeof (regex) === 'function') {
+        if (!regex(value)) {
+            error = {
+                ...error,
+                [fieldName]: {
+                    message: messageAlt
+                }
+            }
+        }
+    } else if (!regex.test(value)) {
+        error = {
+            ...error,
+            [fieldName]: {
+                message: messageAlt
+            }
+        }
+    }
+    return error;
+}
+
+
 module.exports = {
     signup_post: async (usuario) => {
         const passRegex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/;
+        const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/
         try {
             let errors = null;
-            const { password } = usuario;
-            if (!password) {
-                errors = {
-                    ...errors,
-                    'password': {
-                        message: 'Please enter a password'
-                    }
-                }
-            } else if (!passRegex.test(password)) {
-                errors = {
-                    ...errors,
-                    'password': {
-                        message: 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'
-                    }
-                }
-            }
+            let error = [];
+            const { name, lastName, email, password } = usuario;
+            error.push(isValid('name', name, nameRegex, 'Please enter a name', 'Please just enter letters'));
+            error.push(isValid('lastName', lastName, nameRegex, 'Please enter your last name', 'Please just enter letters'));
+            error.push(isValid('email', email, isEmail, 'Please enter an email', 'Please enter a valid email'))
+            error.push(isValid('password', password, passRegex, 'Please enter a password', 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'));
+
+            errors = error
+                .filter(err => err)         // remove all the null objects
+                .reduce((obj, key) => ({    // concat the errors in one object
+                    ...obj,
+                    ...key
+                }), {})
+
             if (errors === null) {
                 const { _doc } = await authRepository.signup_post(usuario);
                 const { password, _id, __v, ...data } = _doc
