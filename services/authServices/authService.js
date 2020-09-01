@@ -62,6 +62,27 @@ module.exports = {
     },
     login_post: async (email, password) => {
         try {
+            let errors = {};
+            if (!email) {
+                errors = {
+                    email: {
+                        message: 'Invalid email',
+                    }
+                }
+            }
+
+            if (!password) {
+                errors = {
+                    ...errors,
+                    password: {
+                        message: 'Invalid password',
+                    }
+                }
+            }
+            if (Object.keys(errors).length) {
+                throw { errors };
+            }
+
             const { error = null, user } = await authRepository.login_post(email, password);
             if (error) {
                 throw error;
@@ -71,7 +92,7 @@ module.exports = {
                 user,
             }
         } catch (error) {
-            const err = error.mongoError ? handleError(error.mongoError) : error.message;
+            const err = error.message ? error.message : handleError(error);
             return new AuthError(err, 400);
         }
     },

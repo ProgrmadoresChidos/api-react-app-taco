@@ -15,13 +15,7 @@ module.exports = {
         return await user.save();
     },
     login_post: async (email, password) => {
-        const user = await userModel.findOne({ email }).catch(error => {
-            throw {
-                error: {
-                    mongoError: error,
-                }
-            }
-        });
+        const user = await userModel.findOne({ email });
         if (!user) {
             return {
                 error: {
