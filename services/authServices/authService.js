@@ -1,4 +1,4 @@
-const { isEmail, isEmpty } = require('validator');
+const { isEmail } = require('validator');
 
 const AuthError = require('../../errors/authErrors/authError');
 const authRepository = require('../../repository/autRepository/authRepository');
