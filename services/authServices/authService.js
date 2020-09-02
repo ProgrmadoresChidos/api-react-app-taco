@@ -1,4 +1,4 @@
-const { isEmail } = require('validator');
+const { isEmail, isEmpty } = require('validator');
 
 const AuthError = require('../../errors/authErrors/authError');
 const authRepository = require('../../repository/autRepository/authRepository');
@@ -56,7 +56,7 @@ const isValid = (fieldName, value, regex, minlength = 0, messageRequire = 'This 
         }
         : null
     }
-    if (!value) {
+    if (value.length === 0) {
         error = {
             ...error,
             [fieldName]: {
@@ -91,12 +91,11 @@ module.exports = {
         try {
             let errors = null;
             let error = [];
-            const { name, lastName, email, password } = usuario;
-            error.push(isValid('name', name, nameRegex, 'Please enter a name', 'Please just enter letters'));
-            error.push(isValid('lastName', lastName, nameRegex, 'Please enter your last name', 'Please just enter letters'));
-            error.push(isValid('email', email, isEmail, 'Please enter an email', 'Please enter a valid email'))
+            const { name = '', lastName = '', email = '', password = '' } = usuario;
+            error.push(isValid('name', name, nameRegex, 0, 'Please enter a name', 'Please just enter letters'));
+            error.push(isValid('lastName', lastName, nameRegex, 0, 'Please enter your last name', 'Please just enter letters'));
+            error.push(isValid('email', email, isEmail, 0, 'Please enter an email', 'Please enter a valid email'))
             error.push(isValid('password', password, passRegex, 8, 'Please enter a password', 'Please enter a valid password: at least 1 uppercase letter, 1 digit, 1 special character'));
-
             const errorFiltered = error.filter(err => err); // remove all the null objects
             errors = errorFiltered.length > 0 ?
                 errorFiltered
