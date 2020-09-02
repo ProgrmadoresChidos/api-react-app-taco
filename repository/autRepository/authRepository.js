@@ -1,18 +1,17 @@
+const bcrypt = require('bcrypt');
 const userModel = require('../../models/user/user');
 
 module.exports = {
-    signup_post: async ({ name, lastName, email, password }) =>{
-        try{
-            const {_doc} = await userModel.create({ name, lastName, email, password});
-            return { 
-                ..._doc,
-                status: 201
-            }
-        }catch(err){
-            return {
-                ...err,
-                status: 400
-            }
-        }
+    signup_post: async ({ name, lastName, email, password }) => {
+
+        const bcryptPassword = bcrypt.hashSync(password, 10);
+        const user = new userModel({
+            name: name,
+            lastName: lastName,
+            email: email,
+            password: bcryptPassword
+        })
+
+        return await user.save();
     }
 }
