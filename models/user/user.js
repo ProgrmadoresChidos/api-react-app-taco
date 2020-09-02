@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/
+
+const rolesValidos = {
+    values: ['ADMIN_ROLE', 'USER_ROLE'],
+    message: '{VALUE} is not a valid role',
+};
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -40,8 +46,13 @@ const userSchema = new mongoose.Schema({
     profileImg: {
         type: String,
         default: ""
-    }
+    },
+    role: {
+        type: String,
+        enum: rolesValidos,
+        default: 'USER_ROLE',
+    },
 })
 
-const user = mongoose.model('user', userSchema);
-module.exports = user;
+userSchema.plugin(uniqueValidator, { message: 'Email already exists' })
+module.exports = mongoose.model('user', userSchema);
