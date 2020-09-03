@@ -23,8 +23,7 @@ module.exports = {
                 }
             }
         }
-
-        if (!bcrypt.compare(password, user.password)) {
+        if (!bcrypt.compareSync(password, user.password)) {
             return {
                 error: {
                     message: 'Wrong user or password'
@@ -33,7 +32,7 @@ module.exports = {
         }
 
         return {
-            user
+            user: user.toJSON()
         }
     },
 }

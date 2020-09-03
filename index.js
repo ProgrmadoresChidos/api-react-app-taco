@@ -16,11 +16,12 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT;
 
+// cors
+app.use(cors());
+
 // Require routes
 app.use(routes);
 
-// cors
-app.use(cors);
 
 // Conexion con Mongo DB
 mongoose.connect(process.env.MONGO_CONNEC_TO, {
