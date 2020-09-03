@@ -19,8 +19,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyAdminRole = (req, res, next) => {
   const user = req.user;
-  if (user.name != 'Robert valdez') {
-    // if (user.role != 'ADMIN') {
+  if (user.role != 'ADMIN_ROLE') {
     return res.status(403).json({
       error: {
         message: "You don't have permission"
