@@ -7,7 +7,7 @@ const validateResult = (result, res) => {
         const { status, ...data } = result.toJson();
         res.status(status).send(data);
     } else {
-        const { status, ...data } = result;
+        const { status, password, ...data } = result;
         var token = jwt.sign(data, process.env.SEED, { expiresIn: Number(process.env.CADUCIDAD_TOKEN) });
         res.cookie('jwt', token, { httpOnly: true, maxAge: Number(process.env.CADUCIDAD_TOKEN) * 1000 });
         res.status(status).send(data);

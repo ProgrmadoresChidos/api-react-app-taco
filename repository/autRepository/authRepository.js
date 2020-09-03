@@ -12,7 +12,7 @@ module.exports = {
             password: bcryptPassword
         })
 
-        return await user.save();
+        return (await user.save()).toJSON();
     },
     login_post: async (email, password) => {
         const user = await userModel.findOne({ email });
