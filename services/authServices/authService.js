@@ -46,15 +46,15 @@ const handleError = (error) => {
  */
 const isValid = (fieldName, value, regex, minlength = 0, messageRequire = 'This field is required', messageAlt = 'regext patter doesn´t match') => {
     let error = null;
-    if(minlength > 0){
-        value.length < minlength? 
-        error = {
-            ...error,
-            [fieldName]: {
-                message: `Minimum length is ${ minlength } characters.`
+    if (minlength > 0) {
+        value.length < minlength ?
+            error = {
+                ...error,
+                [fieldName]: {
+                    message: `Minimum length is ${minlength} characters.`
+                }
             }
-        }
-        : null
+            : null
     }
     if (value.length === 0) {
         error = {
@@ -106,8 +106,7 @@ module.exports = {
                 : null;
 
             if (errors === null) {
-                const { _doc } = await authRepository.signup_post(usuario);
-                const { password, _id, __v, ...data } = _doc
+                const { __v, ...data } = await authRepository.signup_post(usuario);
                 return {
                     ...data,
                     status: 201
@@ -121,5 +120,41 @@ module.exports = {
                 400
             )
         }
-    }
+    },
+    login_post: async (email, password) => {
+        try {
+            let errors = {};
+            if (!email) {
+                errors = {
+                    email: {
+                        message: 'Invalid email',
+                    }
+                }
+            }
+
+            if (!password) {
+                errors = {
+                    ...errors,
+                    password: {
+                        message: 'Invalid password',
+                    }
+                }
+            }
+            if (Object.keys(errors).length) {
+                throw { errors };
+            }
+
+            const { error = null, user } = await authRepository.login_post(email, password);
+            if (error) {
+                throw error;
+            }
+            return {
+                status: 200,
+                ...user,
+            }
+        } catch (error) {
+            const err = error.message ? error.message : handleError(error);
+            return new AuthError(err, 400);
+        }
+    },
 }

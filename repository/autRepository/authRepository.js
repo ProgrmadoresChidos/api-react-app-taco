@@ -12,6 +12,27 @@ module.exports = {
             password: bcryptPassword
         })
 
-        return await user.save();
-    }
+        return (await user.save()).toJSON();
+    },
+    login_post: async (email, password) => {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return {
+                error: {
+                    message: 'Wrong (user) or password'
+                }
+            }
+        }
+        if (!bcrypt.compareSync(password, user.password)) {
+            return {
+                error: {
+                    message: 'Wrong (user) or password'
+                }
+            }
+        }
+
+        return {
+            user: user.toJSON()
+        }
+    },
 }

@@ -7,7 +7,7 @@ const validateResult = (result, res) => {
         const { status, ...data } = result.toJson();
         res.status(status).send(data);
     } else {
-        const { status, ...data } = result;
+        const { status, password, ...data } = result;
         var token = jwt.sign(data, process.env.SEED, { expiresIn: Number(process.env.CADUCIDAD_TOKEN) });
         res.cookie('jwt', token, { httpOnly: true, maxAge: Number(process.env.CADUCIDAD_TOKEN) * 1000 });
         res.status(status).send(data);
@@ -18,5 +18,9 @@ module.exports = {
     signup_post: async (req, res) => {
         const result = await authService.signup_post(req.body);
         validateResult(result, res);
-    }
+    },
+    login_post: async (req, res) => {
+        const result = await authService.login_post(req.body.email, req.body.password);
+        validateResult(result, res);
+    },
 }
