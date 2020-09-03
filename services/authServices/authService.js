@@ -106,7 +106,6 @@ module.exports = {
                 : null;
 
             if (errors === null) {
-                // const { _doc } = 
                 const { __v, ...data } = await authRepository.signup_post(usuario);
                 return {
                     ...data,
