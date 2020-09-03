@@ -46,15 +46,15 @@ const handleError = (error) => {
  */
 const isValid = (fieldName, value, regex, minlength = 0, messageRequire = 'This field is required', messageAlt = 'regext patter doesn´t match') => {
     let error = null;
-    if(minlength > 0){
-        value.length < minlength? 
-        error = {
-            ...error,
-            [fieldName]: {
-                message: `Minimum length is ${ minlength } characters.`
+    if (minlength > 0) {
+        value.length < minlength ?
+            error = {
+                ...error,
+                [fieldName]: {
+                    message: `Minimum length is ${minlength} characters.`
+                }
             }
-        }
-        : null
+            : null
     }
     if (value.length === 0) {
         error = {
@@ -106,8 +106,8 @@ module.exports = {
                 : null;
 
             if (errors === null) {
-                const { _doc } = await authRepository.signup_post(usuario);
-                const { password, _id, __v, ...data } = _doc
+                // const { _doc } = 
+                const { __v, ...data } = await authRepository.signup_post(usuario);
                 return {
                     ...data,
                     status: 201
