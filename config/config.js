@@ -23,6 +23,11 @@ process.env.MONGO_CONNEC_TO = process.env.MONGO_CONNEC_TO || 'mongodb://localhos
 process.env.SEED = process.env.SEED || 'test-token'
 
 // **************************
+// Domain cors
+// **************************
+process.env.DOMAIN = process.env.DOMAIN || 'http://localhost:3000'
+
+// **************************
 // Vencimiento del token
 // **************************
 // 60 segundos
