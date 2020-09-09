@@ -20,7 +20,7 @@ const PORT = process.env.PORT;
 app.use(cors({
     origin: process.env.DOMAIN,
     credentials: true
-}));)
+}));
 
 // Require routes
 app.use(routes);
