@@ -28,6 +28,11 @@ process.env.SEED = process.env.SEED || 'test-token'
 process.env.DOMAIN = process.env.DOMAIN || 'http://localhost:3000'
 
 // **************************
+// Environment
+// **************************
+process.env.NODE_ENV = process.env.NODE_ENV || 'dev'
+
+// **************************
 // Vencimiento del token
 // **************************
 // 60 segundos
