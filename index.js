@@ -17,7 +17,10 @@ app.use(cookieParser());
 const PORT = process.env.PORT;
 
 // cors
-app.use(cors());
+app.use(cors({
+    origin: process.env.DOMAIN,
+    credentials: true
+}));
 
 // Require routes
 app.use(routes);

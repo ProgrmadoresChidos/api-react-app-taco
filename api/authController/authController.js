@@ -9,7 +9,17 @@ const validateResult = (result, res) => {
     } else {
         const { status, password, ...data } = result;
         var token = jwt.sign(data, process.env.SEED, { expiresIn: Number(process.env.CADUCIDAD_TOKEN) });
-        res.cookie('jwt', token, { httpOnly: true, maxAge: Number(process.env.CADUCIDAD_TOKEN) * 1000 });
+        const secureFlag = process.env.NODE_ENV === 'dev'? false: true;
+        res.cookie('jwt', token,
+            {
+                httpOnly: true,
+                path: '/',
+                hostOnly: false,
+                secure: secureFlag,
+                sameSite: true,
+                maxAge: Number(process.env.CADUCIDAD_TOKEN) * 1000
+            }
+        );
         res.status(status).send(data);
     }
 }

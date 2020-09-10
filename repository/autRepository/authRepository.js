@@ -19,14 +19,14 @@ module.exports = {
         if (!user) {
             return {
                 error: {
-                    message: 'Wrong (user) or password'
+                    message: 'Wrong user or password'
                 }
             }
         }
         if (!bcrypt.compareSync(password, user.password)) {
             return {
                 error: {
-                    message: 'Wrong (user) or password'
+                    message: 'Wrong user or password'
                 }
             }
         }
