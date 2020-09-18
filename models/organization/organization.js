@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const { validateName, validatePhoneNumber } = require('../../utils');
 
 const organizationSchema = new mongoose.Schema({
   organization: {
@@ -9,15 +10,18 @@ const organizationSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Please enter a name'],
+    validate: [validateName, 'Please just enter letters'],
   },
   lastName: {
     type: String,
-    required: true,
+    required: [true, 'Please enter a last name'],
+    validate: [validateName, 'Please just enter letters'],
   },
   phoneNumber: {
     type: String,
     required: true,
+    validate: [validatePhoneNumber, 'Please enter a valid phone number'],
   }
 });
 

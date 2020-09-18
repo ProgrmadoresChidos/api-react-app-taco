@@ -1,5 +1,8 @@
 const Error = require('../errors/classes/Error');
 
+const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/;
+const phoneNumberRegex = /^([0-9]){3}(\s|-)?([0-9]){3}(\s|-)?([0-9]){4}$/;
+
 const handleError = (error) => {
   let errors = {}
   Object.keys(error).forEach(value => {
@@ -29,7 +32,14 @@ const handleResult = (result, res) => {
   }
 }
 
+const validateName = name => nameRegex.test(name);
+const validatePhoneNumber = name => phoneNumberRegex.test(name);
+
 module.exports = {
+  nameRegex,
+  phoneNumberRegex,
   handleError,
   handleResult,
+  validateName,
+  validatePhoneNumber,
 }

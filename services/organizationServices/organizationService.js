@@ -1,5 +1,5 @@
 const organizationRepository = require('../../repository/organizationRepository/organizationRepository');
-const { handleError } = require('../../utils');
+const { handleError, validateName, validatePhoneNumber } = require('../../utils');
 const OrganizationError = require('../../errors/organizationErrors/organizationError');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
         errors = {
           ...errors,
           organization: {
-            message: "Invalid Organization name",
+            message: "Please enter a Organization name",
           }
         }
       }
@@ -18,7 +18,16 @@ module.exports = {
         errors = {
           ...errors,
           name: {
-            message: "Invalid name",
+            message: "Please enter a name",
+          }
+        }
+      } else {
+        if (!validateName(name)) {
+          errors = {
+            ...errors,
+            name: {
+              message: "Please just enter letters",
+            }
           }
         }
       }
@@ -26,7 +35,16 @@ module.exports = {
         errors = {
           ...errors,
           lastName: {
-            message: "Invalid last name",
+            message: "Please enter a last name",
+          }
+        }
+      } else {
+        if (!validateName(lastName)) {
+          errors = {
+            ...errors,
+            lastName: {
+              message: "Please just enter letters",
+            }
           }
         }
       }
@@ -34,7 +52,16 @@ module.exports = {
         errors = {
           ...errors,
           phoneNumber: {
-            message: "Invalid phone number",
+            message: "Please enter a phone number",
+          }
+        }
+      } else {
+        if (!validatePhoneNumber(phoneNumber)) {
+          errors = {
+            ...errors,
+            phoneNumber: {
+              message: "Invalid phone number",
+            }
           }
         }
       }
