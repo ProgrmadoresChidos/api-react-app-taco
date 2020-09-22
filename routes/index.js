@@ -1,10 +1,15 @@
 const router = require('express').Router();
 const userRoutes = require('./usersRoutes/userRoutes');
 const authRoutes = require('./authRoutes/authRoutes');
-const orgRoutes = require('./organizationRoutes/organizationRoutes');
+const organizationRoutes = require('./organizationsRoutes/organizationsRoutes');
+
 
 router.use(userRoutes);
 router.use('/auth', authRoutes);
-router.use('/org', orgRoutes);
+router.use('/org', organizationRoutes);
+
+// router.use(userRoutes);
+// router.use('/auth', authRoutes);
+// router.use(organizationRoutes);
 
 module.exports = router;

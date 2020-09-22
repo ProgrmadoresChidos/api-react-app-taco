@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 const uniqueValidator = require('mongoose-unique-validator');
-
-const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/
+const { validateName } = require('../../utils');
 
 const rolesValidos = {
     values: ['ADMIN_ROLE', 'USER_ROLE'],
@@ -13,12 +12,12 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please enter a name'],
-        validate: [(v) => nameRegex.test(v), 'Please just enter letters']
+        validate: [validateName, 'Please just enter letters']
     },
     lastName: {
         type: String,
         required: [true, 'Please enter your last name'],
-        validate: [(v) => nameRegex.test(v), 'Please enter just letters']
+        validate: [validateName, 'Please enter just letters']
     },
     email: {
         type: String,
