@@ -12,6 +12,20 @@ const menuRepository_Post = async (type, tittle, price, description) => {
     return (await menu.save()).toJSON();
 }
 
+const menuRepository_GetById = async (id) => {
+    // const menu = new menuModel();
+    // const result = await menuModel.find({ _id: id })
+    const result = await menuModel.findById(id);
+    return result;
+}
+
+const menuRepository_GetByQuery = async ( query ) => {
+    const result = await menuModel.find(query);
+    return result;
+}
+
 module.exports = {
-    menuRepository_Post
+    menuRepository_Post,
+    menuRepository_GetById,
+    menuRepository_GetByQuery
 }

@@ -1,5 +1,5 @@
 const OrgErrors = require("../../errors/orgErrors/orgErrors");
-const { menuRepository_Post } = require('../../repository/orgRepository/orgRepository')
+const { menuRepository_Post, menuRepository_GetById, menuRepository_GetByQuery } = require('../../repository/orgRepository/orgRepository')
 
 const isValid = (fieldName, value, message = "Field is required") => {
     let errors = null
@@ -42,7 +42,41 @@ const menuService_Post = async (menu) => {
     }
 }
 
+const menuService_GetById = async (req) => {
+    try {
+        const idParameter = req.params.id;
+        if (idParameter) {
+            const result = await menuRepository_GetById(idParameter)
+            if (!result)
+                throw {
+                    errors: [
+                        {
+                            id: {
+                                message: "No se encuentran resultados"
+                            }
+                        }
+                    ]
+                };
+            return result;
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
+const menuService_GetByQuery = async (req) => {
+    try {
+        const { type, tittle, desc } = req.body;
+        let query = { $or: [{ "tittle": "bistec" }, { "type": "Taco" }] };
+        const result = await menuRepository_GetByQuery(query)
+        return result;
+    } catch (err) {
+        return err;
+    }
+}
 
 module.exports = {
-    menuService_Post
+    menuService_Post,
+    menuService_GetById,
+    menuService_GetByQuery
 }
