@@ -1,5 +1,5 @@
 const organizationService = require('../../services/organizationServices/organizationService');
-const { menuService_Post, menuService_GetById, menuService_GetByQuery } = require('../../services/organizationServices/organizationService');
+const { menuService_Post, menuService_GetById, menuService_GetByQuery, menuService_Update } = require('../../services/organizationServices/organizationService');
 const { handleResult } = require('../../utils');
 
 const menuController_Post = async (req, res) => {
@@ -14,6 +14,10 @@ const menuController_GetByQuery = async (req, res) => {
   const result = await menuService_GetByQuery(req);
   handleResult(result, res);
 }
+const menuController_Update = async (req, res) => {
+  const result = await menuService_Update(req.params.id, req.body);
+  handleResult(result, res);
+}
 
 module.exports = {
   createOrganization: async (req, res) => {
@@ -22,5 +26,6 @@ module.exports = {
   },
   menuController_Post,
   menuController_GetById,
-  menuController_GetByQuery
+  menuController_GetByQuery,
+  menuController_Update
 }

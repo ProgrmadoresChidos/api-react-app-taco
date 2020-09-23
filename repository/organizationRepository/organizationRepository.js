@@ -26,6 +26,20 @@ const menuRepository_GetByQuery = async (query, page, sort, maxPage) => {
   return result;
 }
 
+const menuRepository_Update = async (id, query) => {
+  console.log('id', id)
+  console.log('Date', { updatedAt: [Date.now] })
+  // query = {
+  //   ...query,
+  //   updatedAt: [Date.now]
+  // }
+  console.log('query', { $set: query });
+
+  const result = await menuModel.findOneAndUpdate({ "_id": id }, { $set: query });
+  console.log(result)
+  return result? result.toJSON(): result;
+}
+
 
 module.exports = {
   createOrganization: async ({ organization: organizationName, name, lastName, phoneNumber }) => {
@@ -42,5 +56,6 @@ module.exports = {
   },
   menuRepository_Post,
   menuRepository_GetById,
-  menuRepository_GetByQuery
+  menuRepository_GetByQuery,
+  menuRepository_Update
 };

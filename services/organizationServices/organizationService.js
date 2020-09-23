@@ -3,6 +3,7 @@ const {
   menuRepository_GetById,
   menuRepository_GetByQuery,
   menuRepository_Post,
+  menuRepository_Update
 } = require("../../repository/organizationRepository/organizationRepository");
 const {
   handleError,
@@ -19,7 +20,6 @@ const isValid = (fieldName, value, message = "Field is required") => {
       [fieldName]: { message: message },
     };
   }
-
   return errors;
 };
 
@@ -118,7 +118,6 @@ const menuService_GetByQuery = async (req) => {
         }
       }
     }
-
     let buildQuery = {
       $or: [{}]
     }
@@ -146,6 +145,56 @@ const menuService_GetByQuery = async (req) => {
     return new OrganizationError(handleError(err), 400);
   }
 };
+
+const menuService_Update = async (id, menu) => {
+  try {
+    const { type, tittle, description, price } = menu;
+    let errors = {}
+    let query = {}
+    if (type)
+      query = {
+        ...query,
+        type: type
+      }
+    if (tittle)
+      query = {
+        ...query,
+        tittle: tittle
+      }
+    if (description)
+      query = {
+        ...query,
+        description: description
+      }
+    if (price)
+      query = {
+        ...query,
+        price: Number(price)
+      }
+
+    if (query !== null) {
+      const result = await menuRepository_Update(id, query);
+      return {
+        ...result,
+        // nModified: 1,
+        status: 200
+      };
+    } else {
+      errors = {
+        ...errors,
+        empty: {
+          message : 'There is not uptate field.'
+        }
+      }
+      throw {
+        errors
+      }
+    }
+
+  } catch (err) {
+    return new OrganizationError(handleError(err), 400);
+  }
+}
 
 module.exports = {
   createOrganization: async ({ organization, name, lastName, phoneNumber }) => {
@@ -230,4 +279,5 @@ module.exports = {
   menuService_Post,
   menuService_GetById,
   menuService_GetByQuery,
+  menuService_Update
 };
