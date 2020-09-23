@@ -8,6 +8,7 @@ const {
   handleError,
   validateName,
   validatePhoneNumber,
+  sortType
 } = require("../../utils");
 const OrganizationError = require("../../errors/organizationErrors/organizationError");
 
@@ -63,33 +64,69 @@ const menuService_Post = async (menu) => {
 const menuService_GetById = async (req) => {
   try {
     const idParameter = req.params.id;
+    let errors = {}
     if (idParameter) {
       const result = await menuRepository_GetById(idParameter);
-      if (!result)
-        throw {
-          errors: [
-            {
-              id: {
-                message: "No se encuentran resultados",
-              },
-            },
-          ],
-        };
-      return result;
+      if (!result) {
+        errors = {
+          ...errors,
+          id: {
+            message: "Not found results"
+          }
+        }
+        throw { errors }
+      }
+      return {
+        ...result,
+        status: 200
+      };
     }
   } catch (err) {
-    return err;
+    const errFiltered = err.message ?
+      { _id: err.message }
+      :
+      handleError(err)
+    return new OrganizationError(errFiltered, 400);
   }
 };
 
 const menuService_GetByQuery = async (req) => {
   try {
-    const { type, tittle, desc } = req.body;
-    let query = { $or: [{ tittle: "bistec" }, { type: "Taco" }] };
-    const result = await menuRepository_GetByQuery(query);
-    return result;
+    let errors = {}
+    const { type, tittle, description, page = 1, sort = "asc", maxPage = 5 } = req.body;
+    if (!sortType[sort]) {
+      errors = {
+        ...errors,
+        sort: {
+          message: "Allowed values : [asc, desc]"
+        }
+      }
+    }
+    let buildQuery = {
+      $or: [{}]
+    }
+    if (description) {
+      buildQuery["$or"].push({ description: { '$regex': description } });
+    }
+    if (tittle) {
+      buildQuery["$or"].push({ tittle: tittle });
+    }
+    if (type) {
+      buildQuery["$or"].push({ type: type });
+    }
+
+    if (Object.keys(errors).length == 0) {
+      const result = await menuRepository_GetByQuery(buildQuery, page, sortType[sort], maxPage);
+      return {
+        batchSize: result.length,
+        resultSet: result,
+        status: 200
+      }
+    } else {
+      throw { errors };
+    }
   } catch (err) {
-    return err;
+    return new OrganizationError(handleError(err), 400);
   }
 };
 

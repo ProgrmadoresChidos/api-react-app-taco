@@ -14,14 +14,15 @@ const menuRepository_Post = async (type, tittle, price, description) => {
 }
 
 const menuRepository_GetById = async (id) => {
-  // const menu = new menuModel();
-  // const result = await menuModel.find({ _id: id })
   const result = await menuModel.findById(id);
-  return result;
+  return result ? result.toJSON() : result;
 }
 
-const menuRepository_GetByQuery = async (query) => {
-  const result = await menuModel.find(query);
+const menuRepository_GetByQuery = async (query, page, sort, maxPage) => {
+  const result = await menuModel.find(query)
+    .skip(page > 0 ? ((page - 1) * maxPage) : 0)
+    .sort({ _id: sort })
+    .limit(maxPage);
   return result;
 }
 

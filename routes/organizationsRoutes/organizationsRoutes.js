@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { menuController_Post, menuController_GetById, menuController_GetByQuery } = require('../../api/organizationController/organizationController');
 const organizationController = require('../../api/organizationController/organizationController');
 
-router.post('/org', organizationController.createOrganization);
+router.post("/organization",organizationController.createOrganization);
 
 /** 
  * CRUD Menu

@@ -2,6 +2,7 @@ const Error = require('../errors/classes/Error');
 
 const nameRegex = /^[a-zA-Z][a-zA-Z\s]*$/;
 const phoneNumberRegex = /^([0-9]){3}(\s|-)?([0-9]){3}(\s|-)?([0-9]){4}$/;
+const sortType = { asc: 1, desc: -1 };
 
 const handleError = (error) => {
   let errors = {}
@@ -38,6 +39,7 @@ const validatePhoneNumber = name => phoneNumberRegex.test(name);
 module.exports = {
   nameRegex,
   phoneNumberRegex,
+  sortType,
   handleError,
   handleResult,
   validateName,
