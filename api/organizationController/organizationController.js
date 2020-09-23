@@ -7,7 +7,7 @@ const menuController_Post = async (req, res) => {
   handleResult(result, res);
 }
 const menuController_GetById = async (req, res) => {
-  const result = await menuService_GetById(req);
+  const result = await menuService_GetById(req.params.id);
   handleResult(result, res)
 }
 const menuController_GetByQuery = async (req, res) => {
@@ -15,7 +15,7 @@ const menuController_GetByQuery = async (req, res) => {
   handleResult(result, res);
 }
 const menuController_Update = async (req, res) => {
-  const result = await menuService_Update(req.params.id, req.body);
+  const result = await menuService_Update(req);
   handleResult(result, res);
 }
 

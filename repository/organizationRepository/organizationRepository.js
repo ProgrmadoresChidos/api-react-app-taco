@@ -27,18 +27,11 @@ const menuRepository_GetByQuery = async (query, page, sort, maxPage) => {
 }
 
 const menuRepository_Update = async (id, query) => {
-  console.log('id', id)
-  console.log('Date', { updatedAt: [Date.now] })
-  // query = {
-  //   ...query,
-  //   updatedAt: [Date.now]
-  // }
-  console.log('query', { $set: query });
-
-  // const result = await menuModel.findOneAndUpdate({ "_id": id }, { $set: query });
+  query = {
+    ...query,
+    updatedAt: Date.now()
+  }
   const result = await menuModel.updateOne({ "_id": id }, { $set: query });
-  // console.log(result)
-  // return result? result.toJSON(): result;
   return result;
 }
 

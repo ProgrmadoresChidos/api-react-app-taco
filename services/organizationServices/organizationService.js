@@ -61,26 +61,23 @@ const menuService_Post = async (menu) => {
   }
 };
 
-const menuService_GetById = async (req) => {
+const menuService_GetById = async (idParameter) => {
   try {
-    const idParameter = req.params.id;
     let errors = {}
-    if (idParameter) {
-      const result = await menuRepository_GetById(idParameter);
-      if (!result) {
-        errors = {
-          ...errors,
-          id: {
-            message: "Not found results"
-          }
+    const result = await menuRepository_GetById(idParameter);
+    if (!result) {
+      errors = {
+        ...errors,
+        id: {
+          message: "Not found results"
         }
-        throw { errors }
       }
-      return {
-        ...result,
-        status: 200
-      };
+      throw { errors }
     }
+    return {
+      ...result,
+      status: 200
+    };
   } catch (err) {
     const errFiltered = err.message ?
       { _id: err.message }
@@ -134,6 +131,7 @@ const menuService_GetByQuery = async (req) => {
     if (Object.keys(errors).length == 0) {
       const result = await menuRepository_GetByQuery(buildQuery, page, sortType[sort], maxPage);
       return {
+        page: page,
         batchSize: result.length,
         resultSet: result,
         status: 200
@@ -146,53 +144,66 @@ const menuService_GetByQuery = async (req) => {
   }
 };
 
-const menuService_Update = async (id, menu) => {
+const menuService_Update = async (req) => {
   try {
-    const { type, tittle, description, price } = menu;
     let errors = {}
-    let query = {}
-    if (type)
-      query = {
-        ...query,
-        type: type
-      }
-    if (tittle)
-      query = {
-        ...query,
-        tittle: tittle
-      }
-    if (description)
-      query = {
-        ...query,
-        description: description
-      }
-    if (price)
-      query = {
-        ...query,
-        price: Number(price)
-      }
+    const id = req.params.id ? req.params.id : null;
+    if (id) {
+      const menu = req.body;
+      const { type, tittle, description, price } = menu;
+      let query = {}
+      if (type)
+        query = {
+          ...query,
+          type: type
+        }
+      if (tittle)
+        query = {
+          ...query,
+          tittle: tittle
+        }
+      if (description)
+        query = {
+          ...query,
+          description: description
+        }
+      if (price)
+        query = {
+          ...query,
+          price: Number(price)
+        }
 
-    if (query !== null) {
-      const result = await menuRepository_Update(id, query);
-      return {
-        // ...result,
-        nModified: result.nModified,
-        status: 200
-      };
+      if (query !== null) {
+        const result = await menuRepository_Update(id, query);
+        return {
+          // ...result,
+          nModified: result.nModified,
+          status: 200
+        };
+      } else {
+        errors = {
+          ...errors,
+          empty: {
+            message: 'There is not uptate field.'
+          }
+        }
+        throw { errors }
+      }
     } else {
       errors = {
         ...errors,
-        empty: {
-          message : 'There is not uptate field.'
+        id: {
+          message: "Is require the id parameter."
         }
       }
-      throw {
-        errors
-      }
+      throw { errors };
     }
-
   } catch (err) {
-    return new OrganizationError(handleError(err), 400);
+    const errFiltered = err.message ?
+      { _id: err.message }
+      :
+      handleError(err)
+    return new OrganizationError(errFiltered, 400);
   }
 }
 
