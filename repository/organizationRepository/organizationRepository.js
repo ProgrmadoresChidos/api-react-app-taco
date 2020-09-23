@@ -35,9 +35,11 @@ const menuRepository_Update = async (id, query) => {
   // }
   console.log('query', { $set: query });
 
-  const result = await menuModel.findOneAndUpdate({ "_id": id }, { $set: query });
-  console.log(result)
-  return result? result.toJSON(): result;
+  // const result = await menuModel.findOneAndUpdate({ "_id": id }, { $set: query });
+  const result = await menuModel.updateOne({ "_id": id }, { $set: query });
+  // console.log(result)
+  // return result? result.toJSON(): result;
+  return result;
 }
 
 

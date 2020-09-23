@@ -175,8 +175,8 @@ const menuService_Update = async (id, menu) => {
     if (query !== null) {
       const result = await menuRepository_Update(id, query);
       return {
-        ...result,
-        // nModified: 1,
+        // ...result,
+        nModified: result.nModified,
         status: 200
       };
     } else {
