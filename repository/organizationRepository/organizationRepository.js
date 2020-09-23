@@ -21,7 +21,7 @@ const menuRepository_GetById = async (id) => {
 const menuRepository_GetByQuery = async (query, page, sort, maxPage) => {
   const result = await menuModel.find(query)
     .skip(page > 0 ? ((page - 1) * maxPage) : 0)
-    .sort({ _id: sort })
+    .sort({ updatedAt: sort })
     .limit(maxPage);
   return result;
 }

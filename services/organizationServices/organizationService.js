@@ -98,10 +98,27 @@ const menuService_GetByQuery = async (req) => {
       errors = {
         ...errors,
         sort: {
-          message: "Allowed values : [asc, desc]"
+          message: "Allowed values : [asc, desc]."
         }
       }
     }
+    if (page <= 0) {
+      errors = {
+        ...errors,
+        page: {
+          message: "Page number must be greater than zero."
+        }
+      }
+    }
+    if (maxPage <= 0) {
+      errors = {
+        ...errors,
+        maxPage: {
+          message: "MaxPage must be greater than zero."
+        }
+      }
+    }
+
     let buildQuery = {
       $or: [{}]
     }
@@ -109,7 +126,7 @@ const menuService_GetByQuery = async (req) => {
       buildQuery["$or"].push({ description: { '$regex': description } });
     }
     if (tittle) {
-      buildQuery["$or"].push({ tittle: tittle });
+      buildQuery["$or"].push({ tittle: { '$regex': tittle } });
     }
     if (type) {
       buildQuery["$or"].push({ type: type });
