@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const { validateName, validatePhoneNumber } = require('../../utils');
 
-const organizationSchema = new mongoose.Schema({
+// org -> organization
+const orgSchema = new mongoose.Schema({
   organization: {
     type: String,
     required: true,
@@ -25,6 +26,6 @@ const organizationSchema = new mongoose.Schema({
   }
 });
 
-organizationSchema.plugin(uniqueValidator, { message: 'Organization name already exists' });
+orgSchema.plugin(uniqueValidator, { message: 'Organization name already exists' });
 
-module.exports = mongoose.model('organization', organizationSchema);
+module.exports = mongoose.model('organization', orgSchema);
